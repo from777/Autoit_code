@@ -1,0 +1,14 @@
+BD BACKUP/NEW_BD_backup_logs/*
+BD BACKUP/BackUp/*
+BD BACKUP/AutoIt_Error_log.txt
+BD BACKUP/Autoit_errror_Raw.au3
+BD BACKUP/Main_backup_Raw.au3
+BD BACKUP/NEW_BD_backup_OLD.au3
+BD BACKUP/NEW_BD_backup_Raw.au3
+/2.ppk
+/test — копия.au3
+/test copy — копия.au3
+/test copy.au3
+/test.au3
+libs/BackUp/*
+BackUp/*
