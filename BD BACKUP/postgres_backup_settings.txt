@@ -1,15 +1,18 @@
+ChatID=
+Token=
+
 server_ip=192.168.0.33
 sUsername=root
-sPassword=q1q1q1
+sPassword=
 local_disk_gde_backup=C
 local_disk_gde_backup_copy=-1
 skolko_file_backup_max=7
 bd_user=postgres
-put_do_bd_file_na_servere=/home/admin/backup/admin_servers1119.sql 
+put_do_bd_file_na_servere=/home/admin/backup/.sql 
 bd_name=cal2
 bd_pass=-1
 ssh_key=
-papka_otkyda_kachat_backup=/home/admin/backup/admin_servers1119.sql 
+papka_otkyda_kachat_backup=/home/admin/backup/.sql 
 second_command_for_backup=-1
 ne_sravnivat_razmer_s_predidyshim_backupom=-1
 backup_comand=pg_dump -h 127.0.0.1 -p 5432 -U #bd_user# -f #put_do_bd_file_na_servere# #bd_name# > /home/admin/backup/demo.log 2>&1

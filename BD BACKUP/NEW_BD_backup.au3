@@ -22,12 +22,12 @@ $oMyError = ObjEvent("AutoIt.Error", "MyErrFunc")
 #include <Date.au3>
 #include "../libs/_DateDiff_2.au3"
 #include "../libs/telegram-udf-autoit-master/telegram-udf-autoit-master/src/Telegram.au3"
-Local $ChatID = '1009377001' ;Your ChatID here (take this from @MyTelegramID_bot)
-Local $Token = '5618230805:AAFAIcZme9nBm_TUPnmhgdG3_gTT3eLP1Bs'  ;Token here
+Global $ChatID
+Global $Token
 Local $Sleep_posle_vseh_beckapov = 43200000
 
 zapis_v_logi("! _NowDate()... " & _NowDate() & @CRLF & @CRLF)
-zapis_v_logi("! Initializing bot... " & _InitBot($Token) & @CRLF & @CRLF)
+
 
 Local $rows[100]
 Local $server_ip_mas[100]
@@ -52,7 +52,10 @@ Local $restore_comand2_mas[100]
 Local $restore_comand3_mas[100]
 
 
-Zagryzka_settings("settings.txt")
+Zagryzka_settings("c:\postgres_backup_settings.txt")
+zapis_v_logi("! Initializing bot... " & _InitBot($Token) & @CRLF & @CRLF)
+
+
 
 
 
@@ -251,7 +254,7 @@ Func proverka_sto_beckup_ne_osen_old($local_papka_gde_backup, $Sleep_posle_vseh_
 		$curr_time_mas = StringRegExp(_DateTimeFormat(_NowCalc(), 0), "\d+", 3)
 		$proslo_milisekynd = raznisa_dat_v_milesekydah($curr_time_mas, $poslednia_data_mas)
 		If $proslo_milisekynd > $Sleep_posle_vseh_beckapov Then
-			$text_v_log = $prefix_dla_logov & " ERORR " & $server_ip & " DB_NAME:" & $bd_name & " very old backup probably the new one is not written"
+			$text_v_log = $prefix_dla_logov & " ERORR " & $server_ip & " DB_NAME:" & $bd_name& " $local_papka_gde_backup=" & $local_papka_gde_backup & " very old backup probably the new one is not written"
 			zapis_v_logi($text_v_log & @CRLF)
 			$MsgID = _SendMsg($ChatID, $text_v_log)
 		EndIf
@@ -300,6 +303,18 @@ Func Zagryzka_settings($file_name)
 		;zapis_v_logi("$sLine=" & $sLine & @CRLF)
 
 		$array = _StringExplode($sLine, "=", 1)
+
+
+		
+		If $array[0] = 'ChatID' Then
+			$ChatID = StringStripWS($array[1], 3)
+			zapis_v_logi("ChatID=" & $ChatID & @CRLF)
+
+		EndIf
+		If $array[0] = 'Token' Then
+			$Token = StringStripWS($array[1], 3)
+			zapis_v_logi("Token=" & $Token & @CRLF)
+		EndIf
 
 		If $array[0] = 'server_ip' Then
 			$i = 0
@@ -521,7 +536,7 @@ Func Skachivanie_backup_na_local_comp($prefix_dla_logov, $server_ip, $sUsername,
 		_SFTP_Close($hSession)
 
 		If $kak_zalilsa_backup = 0 Then
-			$text_v_log = $prefix_dla_logov & " ERORR " & $server_ip & " DB_NAME:" & $bd_name & " bekap ne scachalsa na local comp"
+			$text_v_log = $prefix_dla_logov & " ERORR " & $server_ip & " DB_NAME:" & $bd_name& " $put_do_file_local=" & $put_do_file_local & " bekap ne scachalsa na local comp"
 			zapis_v_logi($text_v_log & @CRLF)
 			$MsgID = _SendMsg($ChatID, $text_v_log)
 		EndIf
@@ -552,7 +567,7 @@ Func Ydalenie_filov_esli_ih_mnogo($skolko_file_backup_max, $local_papka_gde_back
 
 	If $FileList = 0 Then
 		$kak_zalilsa_backup = 0
-		$text_v_log = $prefix_dla_logov & " ERORR " & $server_ip & " DB_NAME:" & $bd_name & " Func Ydalenie_filov_esli_ih_mnogo Net failov v papke dla backup erorr_code=" & @error
+		$text_v_log = $prefix_dla_logov & " ERORR " & $server_ip & " DB_NAME:" & $bd_name& " local_papka_gde_backup:" & $local_papka_gde_backup & " Func Ydalenie_filov_esli_ih_mnogo Net failov v papke dla backup erorr_code=" & @error
 		zapis_v_logi($text_v_log & @CRLF)
 		$MsgID = _SendMsg($ChatID, $text_v_log)
 		$result_erorr = 1
@@ -585,7 +600,7 @@ Func Poisk_samogo_poslednego_file($papka, ByRef $poslednia_data_mas, $server_ip,
 
 
 	If $FileList = 0 Then
-		$text_v_log = $prefix_dla_logov & " ERORR " & $server_ip & " DB_NAME:" & $bd_name & " Func Poisk_samogo_poslednego_file Net failov v papke dla backup erorr_code=" & @error
+		$text_v_log = $prefix_dla_logov & " ERORR " & $server_ip & " DB_NAME:" & $bd_name & " papka:" & $papka & " Func Poisk_samogo_poslednego_file Net failov v papke dla backup erorr_code=" & @error
 		zapis_v_logi($text_v_log & @CRLF)
 		$MsgID = _SendMsg($ChatID, $text_v_log)
 		$result_erorr = 1
