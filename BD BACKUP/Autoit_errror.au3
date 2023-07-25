@@ -70,10 +70,7 @@ Func Zagryzka_settings($file_name)
 	EndIf
 
 
-	For $i = 0 To 99
-		$rows[$i] = 0
-	Next
-
+	
 	; Читает построчно текст, пока не будет достигнут конец файла EOF
 	While 1
 
