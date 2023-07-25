@@ -11,8 +11,9 @@ AutoItWinSetTitle(@ScriptName)
 TraySetToolTip(@ScriptName & " v2")
 
 $prefix_dla_logov = "BD BACKUP"
-Local $ChatID = '1009377001' ;Your ChatID here (take this from @MyTelegramID_bot)
-Local $Token = '5618230805:AAFAIcZme9nBm_TUPnmhgdG3_gTT3eLP1Bs'  ;Token here
+Global $ChatID
+Global $Token
+Zagryzka_settings("c:\postgres_backup_settings.txt")
 ConsoleWrite("! Initializing bot... " & _InitBot($Token) & @CRLF & @CRLF)
 
 TraySetIcon('ico/22308ladybeetle_98810.ico')
@@ -56,3 +57,53 @@ While 1
 
 	EndIf
 WEnd
+
+
+Func Zagryzka_settings($file_name)
+
+	$hFile = FileOpen($file_name, 0)
+
+	; Проверяет, является ли файл открытым, перед тем как использовать функции чтения/записи в файл
+	If $hFile = -1 Then
+		MsgBox(4096, "Ошибка", "Невозможно открыть файл " & $file_name)
+		Exit
+	EndIf
+
+
+	For $i = 0 To 99
+		$rows[$i] = 0
+	Next
+
+	; Читает построчно текст, пока не будет достигнут конец файла EOF
+	While 1
+
+		$sLine = FileReadLine($hFile)
+		If @error = -1 Then ExitLoop
+		;zapis_v_logi("$sLine=" & $sLine & @CRLF)
+
+		$array = _StringExplode($sLine, "=", 1)
+
+
+		
+		If $array[0] = 'ChatID' Then
+			$ChatID = StringStripWS($array[1], 3)
+		
+
+		EndIf
+		If $array[0] = 'Token' Then
+			$Token = StringStripWS($array[1], 3)
+
+		EndIf
+
+
+
+	WEnd
+	;zapis_v_logi("$rows[$i]=" & $rows[$i] & @CRLF)
+	;_ArrayDisplay($bd_user_mas, "$avArray - заданный вручную 1D массив")
+	FileClose($hFile)
+
+
+	;zapis_v_logi("$main_server_ip=" & $main_server_ip & @CRLF)
+
+
+EndFunc
